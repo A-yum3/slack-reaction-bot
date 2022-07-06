@@ -4,6 +4,8 @@ import IExtractReactionService from '../services/ExtractReactionService/IExtract
 import ExtractMeowReactionService from '../services/ExtractReactionService/ExtractMeowReactionService';
 import GetEmojiListService from '../external/GetEmojiListService';
 import AddReactionService from '../services/AddReactionService';
+import ExtractPraiseReactionService from '../services/ExtractReactionService/ExtractPraiseReactionService';
+import ExtractWelcomeReactionService from '../services/ExtractReactionService/ExtractWelcomeReactionService';
 
 export default class AddReactionUsecase {
     private readonly extractReactionService: IExtractReactionService;
@@ -19,8 +21,14 @@ export default class AddReactionUsecase {
         }
 
         switch (event.reaction) {
-            case 'meow_mudamudamuda':
+            case 'moriage_meow':
                 this.extractReactionService = new ExtractMeowReactionService(this.client);
+                break;
+            case 'moriage_praise':
+                this.extractReactionService = new ExtractPraiseReactionService(this.client);
+                break;
+            case 'moriage_welcome':
+                this.extractReactionService = new ExtractWelcomeReactionService(this.client);
                 break;
             default:
                 throw new Error(`${event.reaction}は対象外のリアクションです。`);
