@@ -1,4 +1,5 @@
 import { WebClient } from '@slack/web-api';
+import AddReactionRequestService from '../external/AddReactionRequestService';
 
 export default class AddReactionService {
     private readonly client: WebClient;
@@ -17,11 +18,12 @@ export default class AddReactionService {
             const name = emoji_names[index];
             emoji_names.splice(index, 1);
             try {
-                await this.client.reactions.add({
-                    name: name,
-                    channel: channel,
-                    timestamp: timestamp,
-                });
+                await AddReactionRequestService.execute(
+                    this.client,
+                    name,
+                    channel,
+                    timestamp
+                );
             } catch (e) {
                 console.log('既に追加済みのためスキップします');
             }

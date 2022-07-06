@@ -4,23 +4,7 @@ module.exports = {
         '^@/(.*)$': '<rootDir>/src/',
     },
     transform: {
-        '^.+\.ts$': 'ts-jest',
+        '^.+\.ts$': 'esbuild-jest',
     },
     testMatch: ['**/tests/**/*.test.ts'],
-    collectCoverageFrom: ['src/**/*.{ts,js}'],
-    coverageDirectory: 'coverage',
-    reporters: [
-        'default',
-        [
-            'jest-junit',
-            {
-                suiteName: 'jest tests',
-                outputDirectory: 'reports/jest',
-                outputName: 'js-test-results.xml',
-                classNameTemplate: '{classname}-{title}',
-                titleTemplate: '{classname}-{title}',
-                ancestorSeparator: ' › ',
-            },
-        ],
-    ],
 };
