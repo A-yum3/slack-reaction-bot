@@ -1,5 +1,5 @@
 import { App, LogLevel } from '@slack/bolt';
-import AddReactionController from './controllers/AddReactionController';
+import AddReactionUsecase from './usecases/AddReactionUsecase';
 
 const app = new App({
     token: process.env.SLACK_BOT_TOKEN,
@@ -10,7 +10,7 @@ const app = new App({
 });
 
 app.event('reaction_added', async ({ event, client }) => {
-    const useCase = new AddReactionController(event, client);
+    const useCase = new AddReactionUsecase(event, client);
     await useCase.execute();
 });
 
