@@ -4,7 +4,7 @@ import readline from 'readline';
 export default class ReadConfig {
     public static async execute(file_name: string): Promise<string[]> {
         const stream = fs.createReadStream(
-            `${__dirname}/../config/${file_name}.txt`
+            `${__dirname}/../../config/${file_name}.txt`
         );
         const reader = readline.createInterface({ input: stream });
 
