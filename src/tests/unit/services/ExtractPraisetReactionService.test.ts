@@ -1,6 +1,6 @@
-import ExtractTargetReactionService from '../../services/ExtractReactionService/ExtractTargetReactionService';
+import ExtractTargetReactionService from '../../../services/ExtractReactionService/ExtractTargetReactionService';
 
-describe('praiseパターンのとき', () => {
+describe('praiseパターンの振る舞いテスト', () => {
     const sut = new ExtractTargetReactionService('text', 'praise');
 
     test('対象がtextを含まないとき、空配列を返す', async () => {
