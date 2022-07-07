@@ -1,6 +1,6 @@
 import { WebClient } from '@slack/web-api';
 
-export default class GetEmojiListService {
+export default class GetEmojiListRequestService {
     static async execute(client: WebClient): Promise<string[]> {
         const response = await client.emoji.list();
 

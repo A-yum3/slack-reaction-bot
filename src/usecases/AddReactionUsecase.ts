@@ -1,45 +1,55 @@
 import { ReactionAddedEvent } from '@slack/bolt';
 import { WebClient } from '@slack/web-api';
-import IExtractReactionService from '../services/ExtractReactionService/IExtractReactionService';
-import ExtractMeowReactionService from '../services/ExtractReactionService/ExtractMeowReactionService';
-import GetEmojiListService from '../external/GetEmojiListService';
+import ExtractTargetReactionService from '../services/ExtractReactionService/ExtractTargetReactionService';
+import GetEmojiListRequestService from '../external/GetEmojiListRequestService';
 import AddReactionService from '../services/AddReactionService';
-import ExtractPraiseReactionService from '../services/ExtractReactionService/ExtractPraiseReactionService';
-import ExtractWelcomeReactionService from '../services/ExtractReactionService/ExtractWelcomeReactionService';
 
 export default class AddReactionUsecase {
-    private readonly extractReactionService: IExtractReactionService;
-    private readonly client: WebClient;
-    private readonly channel: string;
-    private readonly timestamp: string;
+    private readonly _extractReactionService: ExtractTargetReactionService;
+    private readonly _client: WebClient;
+    private readonly _channel: string;
+    private readonly _timestamp: string;
 
     constructor(event: ReactionAddedEvent, client: WebClient) {
-        this.client = client;
+        this._client = client;
 
         if (event.item.type !== 'message') {
             throw new Error(`${event.item.type}は対象外のリアクションです。`);
         }
 
-        switch (event.reaction) {
-            case 'moriage_meow':
-                this.extractReactionService = new ExtractMeowReactionService(this.client);
-                break;
-            case 'moriage_praise':
-                this.extractReactionService = new ExtractPraiseReactionService(this.client);
-                break;
-            case 'moriage_welcome':
-                this.extractReactionService = new ExtractWelcomeReactionService(this.client);
-                break;
-            default:
-                throw new Error(`${event.reaction}は対象外のリアクションです。`);
+        const result = event.reaction.match(/(^moriage)_(.*)/);
+
+        if (result === null) {
+            throw new Error(`${event.reaction}は対象外のリアクションです。`);
         }
-        this.channel = event.item.channel;
-        this.timestamp = event.item.ts;
+
+        let type = result[2];
+        const file_name = result[2];
+
+        if (type !== 'meow') {
+            type = 'text';
+        }
+
+        this._extractReactionService = new ExtractTargetReactionService(
+            type,
+            file_name
+        );
+
+        this._channel = event.item.channel;
+        this._timestamp = event.item.ts;
     }
 
     public async execute(): Promise<void> {
-        const emoji_names = await GetEmojiListService.execute(this.client);
-        const target_emoji_names = this.extractReactionService.execute(emoji_names);
-        await new AddReactionService(this.client).execute(target_emoji_names, this.channel, this.timestamp);
+        const emoji_names = await GetEmojiListRequestService.execute(
+            this._client
+        );
+        const target_emoji_names = await this._extractReactionService.execute(
+            emoji_names
+        );
+        await new AddReactionService(this._client).execute(
+            target_emoji_names,
+            this._channel,
+            this._timestamp
+        );
     }
 }
