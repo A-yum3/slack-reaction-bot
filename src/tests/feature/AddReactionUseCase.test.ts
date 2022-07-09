@@ -12,9 +12,9 @@ describe('正しくパターンごとに振り分けられるかのテスト', (
             item: {
                 type: 'message',
                 channel: 'testChannel',
-                ts: 'timestamp'
+                ts: 'timestamp',
             },
-            event_ts: 'event_ts'
+            event_ts: 'event_ts',
         };
 
         const client = new WebClient();
@@ -32,9 +32,9 @@ describe('正しくパターンごとに振り分けられるかのテスト', (
             item: {
                 type: 'message',
                 channel: 'testChannel',
-                ts: 'timestamp'
+                ts: 'timestamp',
             },
-            event_ts: 'event_ts'
+            event_ts: 'event_ts',
         };
 
         const client = new WebClient();
@@ -50,9 +50,9 @@ describe('正しくパターンごとに振り分けられるかのテスト', (
             item: {
                 type: 'message',
                 channel: 'testChannel',
-                ts: 'timestamp'
+                ts: 'timestamp',
             },
-            event_ts: 'event_ts'
+            event_ts: 'event_ts',
         };
 
         const client = new WebClient();
