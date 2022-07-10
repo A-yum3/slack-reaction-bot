@@ -6,7 +6,7 @@ const app = new App({
     signingSecret: process.env.SLACK_SIGNING_SECRET,
     socketMode: true,
     appToken: process.env.SLACK_APP_TOKEN,
-    logLevel: LogLevel.DEBUG,
+    logLevel: LogLevel.INFO,
 });
 
 app.event('reaction_added', async ({ event, client }) => {

@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn build && yarn serve",
+    "start": "npm run build && npm run serve",
     "build": "npx tsc",
     "serve": "node --require dotenv/config dist/app.js",
     "test": "jest ./src",
